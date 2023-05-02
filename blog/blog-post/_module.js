@@ -3069,7 +3069,7 @@ function create_each_block_1(ctx) {
 	};
 }
 
-// (119:31) 
+// (122:31) 
 function create_if_block_2(ctx) {
 	let img;
 	let img_src_value;
@@ -3106,7 +3106,7 @@ function create_if_block_2(ctx) {
 	};
 }
 
-// (117:6) {#if logo.title}
+// (120:6) {#if logo.title}
 function create_if_block_1$1(ctx) {
 	let t_value = /*logo*/ ctx[0].title + "";
 	let t;
@@ -3130,7 +3130,7 @@ function create_if_block_1$1(ctx) {
 	};
 }
 
-// (129:4) {#if mobileNavOpen}
+// (132:4) {#if mobileNavOpen}
 function create_if_block$1(ctx) {
 	let nav;
 	let t;
@@ -3263,7 +3263,7 @@ function create_if_block$1(ctx) {
 	};
 }
 
-// (131:8) {#each site_nav as { link }}
+// (134:8) {#each site_nav as { link }}
 function create_each_block(ctx) {
 	let a;
 	let t_value = /*link*/ ctx[8].label + "";
@@ -4257,7 +4257,7 @@ function create_fragment$6(ctx) {
 						"url": "",
 						"size": null
 					},
-					"title": "BillionTrees "
+					"title": "BillionTrees"
 				},
 				footer: {
 					"menus": [
@@ -4287,14 +4287,9 @@ function create_fragment$6(ctx) {
 					"size": 3
 				},
 				site_nav: [
+					{ "link": { "url": "/", "label": "Home" } },
 					{
 						"link": { "url": "/about", "label": "About" }
-					},
-					{
-						"link": { "url": "/mission", "label": "Mission" }
-					},
-					{
-						"link": { "url": "/team", "label": "Team" }
 					},
 					{
 						"link": { "url": "/blog", "label": "Blog" }
