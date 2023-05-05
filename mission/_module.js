@@ -265,6 +265,14 @@ function attr(node, attribute, value) {
     else if (node.getAttribute(attribute) !== value)
         node.setAttribute(attribute, value);
 }
+/**
+ * List of attributes that should always be set through the attr method,
+ * because updating them through the property setter doesn't work reliably.
+ * In the example of `width`/`height`, the problem is that the setter only
+ * accepts numeric values, but the attribute can also be set to a string like `50%`.
+ * If this list becomes too big, rethink this approach.
+ */
+const always_set_through_set_attribute = ['width', 'height'];
 function set_attributes(node, attributes) {
     // @ts-ignore
     const descriptors = Object.getOwnPropertyDescriptors(node.__proto__);
@@ -278,7 +286,7 @@ function set_attributes(node, attributes) {
         else if (key === '__value') {
             node.value = node[key] = attributes[key];
         }
-        else if (descriptors[key] && descriptors[key].set) {
+        else if (descriptors[key] && descriptors[key].set && always_set_through_set_attribute.indexOf(key) === -1) {
             node[key] = attributes[key];
         }
         else {
@@ -993,8 +1001,9 @@ class SvelteComponent {
 function create_fragment(ctx) {
 	let meta0;
 	let meta1;
-	let link;
-	let link_href_value;
+	let link0;
+	let link0_href_value;
+	let link1;
 	let title_value;
 	let meta2;
 	let style;
@@ -1005,28 +1014,30 @@ function create_fragment(ctx) {
 		c() {
 			meta0 = element("meta");
 			meta1 = element("meta");
-			link = element("link");
+			link0 = element("link");
+			link1 = element("link");
 			meta2 = element("meta");
 			style = element("style");
-			t = text("/* Reset & standardize default styles */\n@import url(\"https://unpkg.com/@primo-app/primo@1.3.64/reset.css\") layer;\n\n/* Design tokens (apply to components) */\n:root {\n  /* Custom theme options */\n  --color-accent: #004700;\n\n  /* Base values */\n  --box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2);\n  --border-radius: 0;\n  --border-color: #e0e1e1;\n}\n\n/* Root element (use instead of `body`) */\n#page {\n  font-family: system-ui, sans-serif;\n  color: #111;\n  line-height: 1.5;\n  font-size: 1.125rem;\n  background: white;\n}\n\n/* Elements */\n.section-container {\n  max-width: 1200px;\n  margin: 0 auto;\n  padding: 5rem 2rem;\n}\n\na.link {\n  line-height: 1.3;\n\n  border-bottom: 2px solid var(--color-accent);\n  transform: translateY(-2px); /* move link back into place */\n  transition: var(--transition, 0.1s border);\n}\n\na.link:hover {\n    border-color: transparent;\n  }\n\n.heading {\n  font-size: 2.5rem;\n  line-height: 1.15;\n  font-weight: 500;\n}\n\n.button {\n  color: white;\n  background: var(--color-accent, rebeccapurple);\n  border-radius: 0;\n  padding: 18px 24px;\n  transition: var(--transition, 0.1s box-shadow);\n  border: 0;\n}\n\n/* reset */\n\n.button:hover {\n    box-shadow: 0 0 0 2px var(--color-accent, rebeccapurple);\n  }\n\n.button.inverted {\n    background: transparent;\n    color: var(--color-accent, rebeccapurple);\n  }\n\n/* Content Section */\n.content {\n  max-width: 900px;\n  margin: 0 auto;\n  padding: 3rem 2rem;\n}\n.content p {\n    margin-bottom: 1rem;\n    line-height: 1.5;\n  }\n.content img {\n    width: 100%;\n    margin: 2rem 0;\n    box-shadow: var(--box-shadow);\n    border-radius: var(--border-radius);\n  }\n.content a.link {\n    line-height: 1.3;\n    font-weight: 500;\n    border-bottom: 2px solid var(--color-accent);\n    transform: translateY(-2px); /* move link back into place */\n    transition: var(--transition, 0.1s border);\n  }\n.content a.link:hover {\n      border-color: transparent;\n    }\n.content h1 {\n    font-size: 3rem;\n    font-weight: 500;\n    line-height: 1.1;\n    margin-bottom: 1.5rem;\n  }\n.content h2 {\n    font-size: 2.5rem;\n    font-weight: 500;\n    margin-bottom: 1rem;\n  }\n.content h3 {\n    font-size: 2rem;\n    font-weight: 500;\n    margin-bottom: 1rem;\n  }\n.content ul {\n    list-style: disc;\n    padding: 0.5rem 0;\n    padding-left: 1.25rem;\n  }\n.content ol {\n    list-style: decimal;\n    padding: 0.5rem 0;\n    padding-left: 1.25rem;\n  }\n.content blockquote {\n    padding: 2rem;\n    margin-top: 1.5rem;\n    margin-bottom: 1.5rem;\n    border-left: 5px solid var(--color-accent);\n  }");
+			t = text("/* Reset & standardize default styles */\n@import url(\"https://unpkg.com/@primo-app/primo@1.3.64/reset.css\") layer;\n\n/* Design tokens (apply to components) */\n:root {\n  /* Custom theme options */\n  --color-accent: #004700;\n\n  /* Base values */\n  --box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2);\n  --border-radius: 0;\n  --border-color: #e0e1e1;\n}\n\n/* Root element (use instead of `body`) */\n#page {\n  font-family: system-ui, sans-serif;\n  color: #111;\n  line-height: 1.5;\n  font-size: 1.125rem;\n  background: white;\n}\n\n/* Elements */\n.section-container {\n  max-width: 1200px;\n  margin: 0 auto;\n  padding: 5rem 2rem;\n}\n\na.link {\n  line-height: 1.3;\n\n  border-bottom: 2px solid var(--color-accent);\n  transform: translateY(-2px); /* move link back into place */\n  transition: var(--transition, 0.1s border);\n}\n\na.link:hover {\n    border-color: transparent;\n  }\n\n.heading {\n  font-size: 2.5rem;\n  line-height: 1.15;\n\n}\n\n.button {\n  color: white;\n  background: var(--color-accent, rebeccapurple);\n  border-radius: 0;\n  padding: 18px 24px;\n  transition: var(--transition, 0.1s box-shadow);\n  border: 0;\n}\n\n/* reset */\n\n.button:hover {\n    box-shadow: 0 0 0 2px var(--color-accent, rebeccapurple);\n  }\n\n.button.inverted {\n    background: transparent;\n    color: var(--color-accent, rebeccapurple);\n  }\n\n/* Content Section */\n.content {\n  max-width: 900px;\n  margin: 0 auto;\n  padding: 3rem 2rem;\n}\n.content p {\n    margin-bottom: 1rem;\n    line-height: 1.5;\n  }\n.content img {\n    width: 100%;\n    margin: 2rem 0;\n    box-shadow: var(--box-shadow);\n    border-radius: var(--border-radius);\n  }\n.content a.link {\n    line-height: 1.3;\n    font-weight: 500;\n    border-bottom: 2px solid var(--color-accent);\n    transform: translateY(-2px); /* move link back into place */\n    transition: var(--transition, 0.1s border);\n  }\n.content a.link:hover {\n      border-color: transparent;\n    }\n.content h1 {\n    font-size: 3rem;\n    font-weight: 500;\n    line-height: 1.1;\n    margin-bottom: 1.5rem;\n  }\n.content h2 {\n    font-size: 2.5rem;\n    font-weight: 500;\n    margin-bottom: 1rem;\n  }\n.content h3 {\n    font-size: 2rem;\n    font-weight: 500;\n    margin-bottom: 1rem;\n  }\n.content ul {\n    list-style: disc;\n    padding: 0.5rem 0;\n    padding-left: 1.25rem;\n  }\n.content ol {\n    list-style: decimal;\n    padding: 0.5rem 0;\n    padding-left: 1.25rem;\n  }\n.content blockquote {\n    padding: 2rem;\n    margin-top: 1.5rem;\n    margin-bottom: 1.5rem;\n    border-left: 5px solid var(--color-accent);\n  }");
 			this.h();
 		},
 		l(nodes) {
-			const head_nodes = head_selector('svelte-1ta2ctx', document.head);
+			const head_nodes = head_selector('svelte-f4s33s', document.head);
 			meta0 = claim_element(head_nodes, "META", { name: true, content: true });
 			meta1 = claim_element(head_nodes, "META", { charset: true });
 
-			link = claim_element(head_nodes, "LINK", {
+			link0 = claim_element(head_nodes, "LINK", {
 				rel: true,
 				type: true,
 				sizes: true,
 				href: true
 			});
 
+			link1 = claim_element(head_nodes, "LINK", { rel: true, href: true });
 			meta2 = claim_element(head_nodes, "META", { name: true, content: true });
 			style = claim_element(head_nodes, "STYLE", {});
 			var style_nodes = children(style);
-			t = claim_text(style_nodes, "/* Reset & standardize default styles */\n@import url(\"https://unpkg.com/@primo-app/primo@1.3.64/reset.css\") layer;\n\n/* Design tokens (apply to components) */\n:root {\n  /* Custom theme options */\n  --color-accent: #004700;\n\n  /* Base values */\n  --box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2);\n  --border-radius: 0;\n  --border-color: #e0e1e1;\n}\n\n/* Root element (use instead of `body`) */\n#page {\n  font-family: system-ui, sans-serif;\n  color: #111;\n  line-height: 1.5;\n  font-size: 1.125rem;\n  background: white;\n}\n\n/* Elements */\n.section-container {\n  max-width: 1200px;\n  margin: 0 auto;\n  padding: 5rem 2rem;\n}\n\na.link {\n  line-height: 1.3;\n\n  border-bottom: 2px solid var(--color-accent);\n  transform: translateY(-2px); /* move link back into place */\n  transition: var(--transition, 0.1s border);\n}\n\na.link:hover {\n    border-color: transparent;\n  }\n\n.heading {\n  font-size: 2.5rem;\n  line-height: 1.15;\n  font-weight: 500;\n}\n\n.button {\n  color: white;\n  background: var(--color-accent, rebeccapurple);\n  border-radius: 0;\n  padding: 18px 24px;\n  transition: var(--transition, 0.1s box-shadow);\n  border: 0;\n}\n\n/* reset */\n\n.button:hover {\n    box-shadow: 0 0 0 2px var(--color-accent, rebeccapurple);\n  }\n\n.button.inverted {\n    background: transparent;\n    color: var(--color-accent, rebeccapurple);\n  }\n\n/* Content Section */\n.content {\n  max-width: 900px;\n  margin: 0 auto;\n  padding: 3rem 2rem;\n}\n.content p {\n    margin-bottom: 1rem;\n    line-height: 1.5;\n  }\n.content img {\n    width: 100%;\n    margin: 2rem 0;\n    box-shadow: var(--box-shadow);\n    border-radius: var(--border-radius);\n  }\n.content a.link {\n    line-height: 1.3;\n    font-weight: 500;\n    border-bottom: 2px solid var(--color-accent);\n    transform: translateY(-2px); /* move link back into place */\n    transition: var(--transition, 0.1s border);\n  }\n.content a.link:hover {\n      border-color: transparent;\n    }\n.content h1 {\n    font-size: 3rem;\n    font-weight: 500;\n    line-height: 1.1;\n    margin-bottom: 1.5rem;\n  }\n.content h2 {\n    font-size: 2.5rem;\n    font-weight: 500;\n    margin-bottom: 1rem;\n  }\n.content h3 {\n    font-size: 2rem;\n    font-weight: 500;\n    margin-bottom: 1rem;\n  }\n.content ul {\n    list-style: disc;\n    padding: 0.5rem 0;\n    padding-left: 1.25rem;\n  }\n.content ol {\n    list-style: decimal;\n    padding: 0.5rem 0;\n    padding-left: 1.25rem;\n  }\n.content blockquote {\n    padding: 2rem;\n    margin-top: 1.5rem;\n    margin-bottom: 1.5rem;\n    border-left: 5px solid var(--color-accent);\n  }");
+			t = claim_text(style_nodes, "/* Reset & standardize default styles */\n@import url(\"https://unpkg.com/@primo-app/primo@1.3.64/reset.css\") layer;\n\n/* Design tokens (apply to components) */\n:root {\n  /* Custom theme options */\n  --color-accent: #004700;\n\n  /* Base values */\n  --box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.2);\n  --border-radius: 0;\n  --border-color: #e0e1e1;\n}\n\n/* Root element (use instead of `body`) */\n#page {\n  font-family: system-ui, sans-serif;\n  color: #111;\n  line-height: 1.5;\n  font-size: 1.125rem;\n  background: white;\n}\n\n/* Elements */\n.section-container {\n  max-width: 1200px;\n  margin: 0 auto;\n  padding: 5rem 2rem;\n}\n\na.link {\n  line-height: 1.3;\n\n  border-bottom: 2px solid var(--color-accent);\n  transform: translateY(-2px); /* move link back into place */\n  transition: var(--transition, 0.1s border);\n}\n\na.link:hover {\n    border-color: transparent;\n  }\n\n.heading {\n  font-size: 2.5rem;\n  line-height: 1.15;\n\n}\n\n.button {\n  color: white;\n  background: var(--color-accent, rebeccapurple);\n  border-radius: 0;\n  padding: 18px 24px;\n  transition: var(--transition, 0.1s box-shadow);\n  border: 0;\n}\n\n/* reset */\n\n.button:hover {\n    box-shadow: 0 0 0 2px var(--color-accent, rebeccapurple);\n  }\n\n.button.inverted {\n    background: transparent;\n    color: var(--color-accent, rebeccapurple);\n  }\n\n/* Content Section */\n.content {\n  max-width: 900px;\n  margin: 0 auto;\n  padding: 3rem 2rem;\n}\n.content p {\n    margin-bottom: 1rem;\n    line-height: 1.5;\n  }\n.content img {\n    width: 100%;\n    margin: 2rem 0;\n    box-shadow: var(--box-shadow);\n    border-radius: var(--border-radius);\n  }\n.content a.link {\n    line-height: 1.3;\n    font-weight: 500;\n    border-bottom: 2px solid var(--color-accent);\n    transform: translateY(-2px); /* move link back into place */\n    transition: var(--transition, 0.1s border);\n  }\n.content a.link:hover {\n      border-color: transparent;\n    }\n.content h1 {\n    font-size: 3rem;\n    font-weight: 500;\n    line-height: 1.1;\n    margin-bottom: 1.5rem;\n  }\n.content h2 {\n    font-size: 2.5rem;\n    font-weight: 500;\n    margin-bottom: 1rem;\n  }\n.content h3 {\n    font-size: 2rem;\n    font-weight: 500;\n    margin-bottom: 1rem;\n  }\n.content ul {\n    list-style: disc;\n    padding: 0.5rem 0;\n    padding-left: 1.25rem;\n  }\n.content ol {\n    list-style: decimal;\n    padding: 0.5rem 0;\n    padding-left: 1.25rem;\n  }\n.content blockquote {\n    padding: 2rem;\n    margin-top: 1.5rem;\n    margin-bottom: 1.5rem;\n    border-left: 5px solid var(--color-accent);\n  }");
 			style_nodes.forEach(detach);
 			head_nodes.forEach(detach);
 			this.h();
@@ -1035,24 +1046,27 @@ function create_fragment(ctx) {
 			attr(meta0, "name", "viewport");
 			attr(meta0, "content", "width=device-width, initial-scale=1.0");
 			attr(meta1, "charset", "UTF-8");
-			attr(link, "rel", "icon");
-			attr(link, "type", "image/png");
-			attr(link, "sizes", "32x32");
-			attr(link, "href", link_href_value = /*favicon*/ ctx[0].url);
+			attr(link0, "rel", "icon");
+			attr(link0, "type", "image/png");
+			attr(link0, "sizes", "32x32");
+			attr(link0, "href", link0_href_value = /*favicon*/ ctx[0].url);
+			attr(link1, "rel", "preconnect");
+			attr(link1, "href", "https://fonts.bunny.net");
 			attr(meta2, "name", "description");
 			attr(meta2, "content", /*description*/ ctx[2]);
 		},
 		m(target, anchor) {
 			append_hydration(document.head, meta0);
 			append_hydration(document.head, meta1);
-			append_hydration(document.head, link);
+			append_hydration(document.head, link0);
+			append_hydration(document.head, link1);
 			append_hydration(document.head, meta2);
 			append_hydration(document.head, style);
 			append_hydration(style, t);
 		},
 		p(ctx, [dirty]) {
-			if (dirty & /*favicon*/ 1 && link_href_value !== (link_href_value = /*favicon*/ ctx[0].url)) {
-				attr(link, "href", link_href_value);
+			if (dirty & /*favicon*/ 1 && link0_href_value !== (link0_href_value = /*favicon*/ ctx[0].url)) {
+				attr(link0, "href", link0_href_value);
 			}
 
 			if (dirty & /*title*/ 2 && title_value !== (title_value = /*title*/ ctx[1])) {
@@ -1068,7 +1082,8 @@ function create_fragment(ctx) {
 		d(detaching) {
 			detach(meta0);
 			detach(meta1);
-			detach(link);
+			detach(link0);
+			detach(link1);
 			detach(meta2);
 			detach(style);
 		}
@@ -1076,37 +1091,23 @@ function create_fragment(ctx) {
 }
 
 function instance($$self, $$props, $$invalidate) {
-	let { logo } = $$props;
-	let { footer } = $$props;
 	let { favicon } = $$props;
-	let { site_nav } = $$props;
 	let { title } = $$props;
 	let { description } = $$props;
 
 	$$self.$$set = $$props => {
-		if ('logo' in $$props) $$invalidate(3, logo = $$props.logo);
-		if ('footer' in $$props) $$invalidate(4, footer = $$props.footer);
 		if ('favicon' in $$props) $$invalidate(0, favicon = $$props.favicon);
-		if ('site_nav' in $$props) $$invalidate(5, site_nav = $$props.site_nav);
 		if ('title' in $$props) $$invalidate(1, title = $$props.title);
 		if ('description' in $$props) $$invalidate(2, description = $$props.description);
 	};
 
-	return [favicon, title, description, logo, footer, site_nav];
+	return [favicon, title, description];
 }
 
 class Component extends SvelteComponent {
 	constructor(options) {
 		super();
-
-		init(this, options, instance, create_fragment, safe_not_equal, {
-			logo: 3,
-			footer: 4,
-			favicon: 0,
-			site_nav: 5,
-			title: 1,
-			description: 2
-		});
+		init(this, options, instance, create_fragment, safe_not_equal, { favicon: 0, title: 1, description: 2 });
 	}
 }
 
@@ -2975,17 +2976,17 @@ class Component$1 extends SvelteComponent {
 
 function get_each_context(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[10] = list[i].link;
+	child_ctx[9] = list[i].link;
 	return child_ctx;
 }
 
 function get_each_context_1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[10] = list[i].link;
+	child_ctx[9] = list[i].link;
 	return child_ctx;
 }
 
-// (107:31) 
+// (106:31) 
 function create_if_block_4(ctx) {
 	let img;
 	let img_src_value;
@@ -3022,7 +3023,7 @@ function create_if_block_4(ctx) {
 	};
 }
 
-// (105:6) {#if logo.title}
+// (104:6) {#if logo.title}
 function create_if_block_3(ctx) {
 	let t_value = /*logo*/ ctx[0].title + "";
 	let t;
@@ -3046,10 +3047,10 @@ function create_if_block_3(ctx) {
 	};
 }
 
-// (112:6) {#each site_nav as { link }}
+// (111:6) {#each site_nav as { link }}
 function create_each_block_1(ctx) {
 	let a;
-	let t_value = /*link*/ ctx[10].label + "";
+	let t_value = /*link*/ ctx[9].label + "";
 	let t;
 	let a_href_value;
 
@@ -3068,22 +3069,22 @@ function create_each_block_1(ctx) {
 		},
 		h() {
 			attr(a, "class", "link svelte-136lx2d");
-			attr(a, "href", a_href_value = /*link*/ ctx[10].url);
-			toggle_class(a, "active", /*link*/ ctx[10].url === window.location.pathname);
+			attr(a, "href", a_href_value = /*link*/ ctx[9].url);
+			toggle_class(a, "active", /*link*/ ctx[9].url === window.location.pathname);
 		},
 		m(target, anchor) {
 			insert_hydration(target, a, anchor);
 			append_hydration(a, t);
 		},
 		p(ctx, dirty) {
-			if (dirty & /*site_nav*/ 2 && t_value !== (t_value = /*link*/ ctx[10].label + "")) set_data(t, t_value);
+			if (dirty & /*site_nav*/ 2 && t_value !== (t_value = /*link*/ ctx[9].label + "")) set_data(t, t_value);
 
-			if (dirty & /*site_nav*/ 2 && a_href_value !== (a_href_value = /*link*/ ctx[10].url)) {
+			if (dirty & /*site_nav*/ 2 && a_href_value !== (a_href_value = /*link*/ ctx[9].url)) {
 				attr(a, "href", a_href_value);
 			}
 
 			if (dirty & /*site_nav, window*/ 2) {
-				toggle_class(a, "active", /*link*/ ctx[10].url === window.location.pathname);
+				toggle_class(a, "active", /*link*/ ctx[9].url === window.location.pathname);
 			}
 		},
 		d(detaching) {
@@ -3092,7 +3093,7 @@ function create_each_block_1(ctx) {
 	};
 }
 
-// (124:31) 
+// (123:31) 
 function create_if_block_2(ctx) {
 	let img;
 	let img_src_value;
@@ -3129,7 +3130,7 @@ function create_if_block_2(ctx) {
 	};
 }
 
-// (122:6) {#if logo.title}
+// (121:6) {#if logo.title}
 function create_if_block_1$1(ctx) {
 	let t_value = /*logo*/ ctx[0].title + "";
 	let t;
@@ -3153,7 +3154,7 @@ function create_if_block_1$1(ctx) {
 	};
 }
 
-// (134:4) {#if mobileNavOpen}
+// (133:4) {#if mobileNavOpen}
 function create_if_block$1(ctx) {
 	let nav;
 	let t;
@@ -3229,7 +3230,7 @@ function create_if_block$1(ctx) {
 			current = true;
 
 			if (!mounted) {
-				dispose = listen(button, "click", /*click_handler_1*/ ctx[8]);
+				dispose = listen(button, "click", /*click_handler_1*/ ctx[7]);
 				mounted = true;
 			}
 		},
@@ -3286,10 +3287,10 @@ function create_if_block$1(ctx) {
 	};
 }
 
-// (136:8) {#each site_nav as { link }}
+// (135:8) {#each site_nav as { link }}
 function create_each_block(ctx) {
 	let a;
-	let t_value = /*link*/ ctx[10].label + "";
+	let t_value = /*link*/ ctx[9].label + "";
 	let t;
 	let a_href_value;
 
@@ -3307,16 +3308,16 @@ function create_each_block(ctx) {
 			this.h();
 		},
 		h() {
-			attr(a, "href", a_href_value = /*link*/ ctx[10].url);
+			attr(a, "href", a_href_value = /*link*/ ctx[9].url);
 		},
 		m(target, anchor) {
 			insert_hydration(target, a, anchor);
 			append_hydration(a, t);
 		},
 		p(ctx, dirty) {
-			if (dirty & /*site_nav*/ 2 && t_value !== (t_value = /*link*/ ctx[10].label + "")) set_data(t, t_value);
+			if (dirty & /*site_nav*/ 2 && t_value !== (t_value = /*link*/ ctx[9].label + "")) set_data(t, t_value);
 
-			if (dirty & /*site_nav*/ 2 && a_href_value !== (a_href_value = /*link*/ ctx[10].url)) {
+			if (dirty & /*site_nav*/ 2 && a_href_value !== (a_href_value = /*link*/ ctx[9].url)) {
 				attr(a, "href", a_href_value);
 			}
 		},
@@ -3485,7 +3486,7 @@ function create_fragment$2(ctx) {
 			current = true;
 
 			if (!mounted) {
-				dispose = listen(button, "click", /*click_handler*/ ctx[7]);
+				dispose = listen(button, "click", /*click_handler*/ ctx[6]);
 				mounted = true;
 			}
 		},
@@ -3593,31 +3594,28 @@ function create_fragment$2(ctx) {
 }
 
 function instance$2($$self, $$props, $$invalidate) {
-	let { logo } = $$props;
-	let { footer } = $$props;
 	let { favicon } = $$props;
-	let { site_nav } = $$props;
 	let { title } = $$props;
 	let { description } = $$props;
+	let { logo } = $$props;
+	let { site_nav } = $$props;
 	let mobileNavOpen = false;
 
 	const click_handler = () => $$invalidate(2, mobileNavOpen = true);
 	const click_handler_1 = () => $$invalidate(2, mobileNavOpen = false);
 
 	$$self.$$set = $$props => {
+		if ('favicon' in $$props) $$invalidate(3, favicon = $$props.favicon);
+		if ('title' in $$props) $$invalidate(4, title = $$props.title);
+		if ('description' in $$props) $$invalidate(5, description = $$props.description);
 		if ('logo' in $$props) $$invalidate(0, logo = $$props.logo);
-		if ('footer' in $$props) $$invalidate(3, footer = $$props.footer);
-		if ('favicon' in $$props) $$invalidate(4, favicon = $$props.favicon);
 		if ('site_nav' in $$props) $$invalidate(1, site_nav = $$props.site_nav);
-		if ('title' in $$props) $$invalidate(5, title = $$props.title);
-		if ('description' in $$props) $$invalidate(6, description = $$props.description);
 	};
 
 	return [
 		logo,
 		site_nav,
 		mobileNavOpen,
-		footer,
 		favicon,
 		title,
 		description,
@@ -3631,12 +3629,11 @@ class Component$2 extends SvelteComponent {
 		super();
 
 		init(this, options, instance$2, create_fragment$2, safe_not_equal, {
+			favicon: 3,
+			title: 4,
+			description: 5,
 			logo: 0,
-			footer: 3,
-			favicon: 4,
-			site_nav: 1,
-			title: 5,
-			description: 6
+			site_nav: 1
 		});
 	}
 }
@@ -3718,27 +3715,21 @@ function create_fragment$3(ctx) {
 }
 
 function instance$3($$self, $$props, $$invalidate) {
-	let { logo } = $$props;
-	let { footer } = $$props;
 	let { favicon } = $$props;
-	let { site_nav } = $$props;
 	let { title } = $$props;
 	let { description } = $$props;
 	let { image } = $$props;
 	let { content } = $$props;
 
 	$$self.$$set = $$props => {
-		if ('logo' in $$props) $$invalidate(2, logo = $$props.logo);
-		if ('footer' in $$props) $$invalidate(3, footer = $$props.footer);
-		if ('favicon' in $$props) $$invalidate(4, favicon = $$props.favicon);
-		if ('site_nav' in $$props) $$invalidate(5, site_nav = $$props.site_nav);
-		if ('title' in $$props) $$invalidate(6, title = $$props.title);
-		if ('description' in $$props) $$invalidate(7, description = $$props.description);
+		if ('favicon' in $$props) $$invalidate(2, favicon = $$props.favicon);
+		if ('title' in $$props) $$invalidate(3, title = $$props.title);
+		if ('description' in $$props) $$invalidate(4, description = $$props.description);
 		if ('image' in $$props) $$invalidate(0, image = $$props.image);
 		if ('content' in $$props) $$invalidate(1, content = $$props.content);
 	};
 
-	return [image, content, logo, footer, favicon, site_nav, title, description];
+	return [image, content, favicon, title, description];
 }
 
 class Component$3 extends SvelteComponent {
@@ -3746,12 +3737,9 @@ class Component$3 extends SvelteComponent {
 		super();
 
 		init(this, options, instance$3, create_fragment$3, safe_not_equal, {
-			logo: 2,
-			footer: 3,
-			favicon: 4,
-			site_nav: 5,
-			title: 6,
-			description: 7,
+			favicon: 2,
+			title: 3,
+			description: 4,
 			image: 0,
 			content: 1
 		});
@@ -3763,21 +3751,21 @@ class Component$3 extends SvelteComponent {
 function get_each_context$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
 	child_ctx[2] = list[i].title;
-	child_ctx[8] = list[i].links;
+	child_ctx[5] = list[i].links;
 	return child_ctx;
 }
 
 function get_each_context_1$1(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[11] = list[i].link;
+	child_ctx[8] = list[i].link;
 	return child_ctx;
 }
 
-// (69:12) {#each links as { link }}
+// (66:12) {#each links as { link }}
 function create_each_block_1$1(ctx) {
 	let li;
 	let a;
-	let t0_value = /*link*/ ctx[11].label + "";
+	let t0_value = /*link*/ ctx[8].label + "";
 	let t0;
 	let a_href_value;
 	let t1;
@@ -3803,7 +3791,7 @@ function create_each_block_1$1(ctx) {
 		},
 		h() {
 			attr(a, "class", "link svelte-u1zmy0");
-			attr(a, "href", a_href_value = /*link*/ ctx[11].url);
+			attr(a, "href", a_href_value = /*link*/ ctx[8].url);
 		},
 		m(target, anchor) {
 			insert_hydration(target, li, anchor);
@@ -3812,9 +3800,9 @@ function create_each_block_1$1(ctx) {
 			append_hydration(li, t1);
 		},
 		p(ctx, dirty) {
-			if (dirty & /*menus*/ 2 && t0_value !== (t0_value = /*link*/ ctx[11].label + "")) set_data(t0, t0_value);
+			if (dirty & /*menus*/ 2 && t0_value !== (t0_value = /*link*/ ctx[8].label + "")) set_data(t0, t0_value);
 
-			if (dirty & /*menus*/ 2 && a_href_value !== (a_href_value = /*link*/ ctx[11].url)) {
+			if (dirty & /*menus*/ 2 && a_href_value !== (a_href_value = /*link*/ ctx[8].url)) {
 				attr(a, "href", a_href_value);
 			}
 		},
@@ -3824,7 +3812,7 @@ function create_each_block_1$1(ctx) {
 	};
 }
 
-// (65:6) {#each menus as { title, links }}
+// (62:6) {#each menus as { title, links }}
 function create_each_block$1(ctx) {
 	let nav;
 	let h3;
@@ -3833,7 +3821,7 @@ function create_each_block$1(ctx) {
 	let t1;
 	let ul;
 	let t2;
-	let each_value_1 = /*links*/ ctx[8];
+	let each_value_1 = /*links*/ ctx[5];
 	let each_blocks = [];
 
 	for (let i = 0; i < each_value_1.length; i += 1) {
@@ -3898,7 +3886,7 @@ function create_each_block$1(ctx) {
 			if (dirty & /*menus*/ 2 && t0_value !== (t0_value = /*title*/ ctx[2] + "")) set_data(t0, t0_value);
 
 			if (dirty & /*menus*/ 2) {
-				each_value_1 = /*links*/ ctx[8];
+				each_value_1 = /*links*/ ctx[5];
 				let i;
 
 				for (i = 0; i < each_value_1.length; i += 1) {
@@ -3930,7 +3918,7 @@ function create_each_block$1(ctx) {
 function create_fragment$4(ctx) {
 	let div4;
 	let div3;
-	let footer_1;
+	let footer;
 	let div2;
 	let div0;
 	let raw_value = /*content*/ ctx[0].html + "";
@@ -3947,7 +3935,7 @@ function create_fragment$4(ctx) {
 		c() {
 			div4 = element("div");
 			div3 = element("div");
-			footer_1 = element("footer");
+			footer = element("footer");
 			div2 = element("div");
 			div0 = element("div");
 			t = space();
@@ -3964,9 +3952,9 @@ function create_fragment$4(ctx) {
 			var div4_nodes = children(div4);
 			div3 = claim_element(div4_nodes, "DIV", { class: true });
 			var div3_nodes = children(div3);
-			footer_1 = claim_element(div3_nodes, "FOOTER", { class: true });
-			var footer_1_nodes = children(footer_1);
-			div2 = claim_element(footer_1_nodes, "DIV", { class: true });
+			footer = claim_element(div3_nodes, "FOOTER", { class: true });
+			var footer_nodes = children(footer);
+			div2 = claim_element(footer_nodes, "DIV", { class: true });
 			var div2_nodes = children(div2);
 			div0 = claim_element(div2_nodes, "DIV", { class: true });
 			var div0_nodes = children(div0);
@@ -3981,7 +3969,7 @@ function create_fragment$4(ctx) {
 
 			div1_nodes.forEach(detach);
 			div2_nodes.forEach(detach);
-			footer_1_nodes.forEach(detach);
+			footer_nodes.forEach(detach);
 			div3_nodes.forEach(detach);
 			div4_nodes.forEach(detach);
 			this.h();
@@ -3990,7 +3978,7 @@ function create_fragment$4(ctx) {
 			attr(div0, "class", "content svelte-u1zmy0");
 			attr(div1, "class", "nav-items svelte-u1zmy0");
 			attr(div2, "class", "section-container svelte-u1zmy0");
-			attr(footer_1, "class", "svelte-u1zmy0");
+			attr(footer, "class", "svelte-u1zmy0");
 			attr(div3, "class", "component");
 			attr(div4, "class", "section");
 			attr(div4, "id", "section-b43ec8c9-7bb3-493e-86bb-cdf7fac8c9cf");
@@ -3998,8 +3986,8 @@ function create_fragment$4(ctx) {
 		m(target, anchor) {
 			insert_hydration(target, div4, anchor);
 			append_hydration(div4, div3);
-			append_hydration(div3, footer_1);
-			append_hydration(footer_1, div2);
+			append_hydration(div3, footer);
+			append_hydration(footer, div2);
 			append_hydration(div2, div0);
 			div0.innerHTML = raw_value;
 			append_hydration(div2, t);
@@ -4046,27 +4034,21 @@ function create_fragment$4(ctx) {
 }
 
 function instance$4($$self, $$props, $$invalidate) {
-	let { logo } = $$props;
-	let { footer } = $$props;
 	let { favicon } = $$props;
-	let { site_nav } = $$props;
 	let { title } = $$props;
 	let { description } = $$props;
 	let { content } = $$props;
 	let { menus } = $$props;
 
 	$$self.$$set = $$props => {
-		if ('logo' in $$props) $$invalidate(3, logo = $$props.logo);
-		if ('footer' in $$props) $$invalidate(4, footer = $$props.footer);
-		if ('favicon' in $$props) $$invalidate(5, favicon = $$props.favicon);
-		if ('site_nav' in $$props) $$invalidate(6, site_nav = $$props.site_nav);
+		if ('favicon' in $$props) $$invalidate(3, favicon = $$props.favicon);
 		if ('title' in $$props) $$invalidate(2, title = $$props.title);
-		if ('description' in $$props) $$invalidate(7, description = $$props.description);
+		if ('description' in $$props) $$invalidate(4, description = $$props.description);
 		if ('content' in $$props) $$invalidate(0, content = $$props.content);
 		if ('menus' in $$props) $$invalidate(1, menus = $$props.menus);
 	};
 
-	return [content, menus, title, logo, footer, favicon, site_nav, description];
+	return [content, menus, title, favicon, description];
 }
 
 class Component$4 extends SvelteComponent {
@@ -4074,12 +4056,9 @@ class Component$4 extends SvelteComponent {
 		super();
 
 		init(this, options, instance$4, create_fragment$4, safe_not_equal, {
-			logo: 3,
-			footer: 4,
-			favicon: 5,
-			site_nav: 6,
+			favicon: 3,
 			title: 2,
-			description: 7,
+			description: 4,
 			content: 0,
 			menus: 1
 		});
@@ -4089,37 +4068,23 @@ class Component$4 extends SvelteComponent {
 /* generated by Svelte v3.58.0 */
 
 function instance$5($$self, $$props, $$invalidate) {
-	let { logo } = $$props;
-	let { footer } = $$props;
 	let { favicon } = $$props;
-	let { site_nav } = $$props;
 	let { title } = $$props;
 	let { description } = $$props;
 
 	$$self.$$set = $$props => {
-		if ('logo' in $$props) $$invalidate(0, logo = $$props.logo);
-		if ('footer' in $$props) $$invalidate(1, footer = $$props.footer);
-		if ('favicon' in $$props) $$invalidate(2, favicon = $$props.favicon);
-		if ('site_nav' in $$props) $$invalidate(3, site_nav = $$props.site_nav);
-		if ('title' in $$props) $$invalidate(4, title = $$props.title);
-		if ('description' in $$props) $$invalidate(5, description = $$props.description);
+		if ('favicon' in $$props) $$invalidate(0, favicon = $$props.favicon);
+		if ('title' in $$props) $$invalidate(1, title = $$props.title);
+		if ('description' in $$props) $$invalidate(2, description = $$props.description);
 	};
 
-	return [logo, footer, favicon, site_nav, title, description];
+	return [favicon, title, description];
 }
 
 class Component$5 extends SvelteComponent {
 	constructor(options) {
 		super();
-
-		init(this, options, instance$5, null, safe_not_equal, {
-			logo: 0,
-			footer: 1,
-			favicon: 2,
-			site_nav: 3,
-			title: 4,
-			description: 5
-		});
+		init(this, options, instance$5, null, safe_not_equal, { favicon: 0, title: 1, description: 2 });
 	}
 }
 
@@ -4139,56 +4104,12 @@ function create_fragment$5(ctx) {
 
 	component_0 = new Component({
 			props: {
-				logo: {
-					"image": {
-						"alt": "",
-						"src": "",
-						"url": "",
-						"size": null
-					},
-					"title": "BillionTrees "
-				},
-				footer: {
-					"menus": [
-						{
-							"links": [
-								{ "link": { "url": "/", "label": "sit" } },
-								{ "link": { "url": "/", "label": "nulla" } }
-							],
-							"title": "About Us"
-						},
-						{
-							"links": [
-								{
-									"link": { "url": "/", "label": "labore" }
-								},
-								{ "link": { "url": "/", "label": "velit" } }
-							],
-							"title": "Get Involved"
-						}
-					],
-					"content": "<h3 id=\"billiontreesbr\">BillionTrees <br></h3>\n<p>321 Something St. Jackson, AL 20332</p>"
-				},
 				favicon: {
 					"alt": "",
 					"src": "https://jbbjtodsvhsgjappwopg.supabase.co/storage/v1/object/public/sites/prisaka/assets/logoipsum-277.svg",
 					"url": "https://jbbjtodsvhsgjappwopg.supabase.co/storage/v1/object/public/sites/prisaka/assets/logoipsum-277.svg",
 					"size": 3
 				},
-				site_nav: [
-					{
-						"link": { "url": "/about", "label": "About" }
-					},
-					{
-						"link": { "url": "/mission", "label": "Mission" }
-					},
-					{
-						"link": { "url": "/team", "label": "Team" }
-					},
-					{
-						"link": { "url": "/blog", "label": "Blog" }
-					}
-				],
 				title: "Our Mission",
 				description: "One Billion Tree's mission"
 			}
@@ -4196,6 +4117,14 @@ function create_fragment$5(ctx) {
 
 	component_1 = new Component$2({
 			props: {
+				favicon: {
+					"alt": "",
+					"src": "https://jbbjtodsvhsgjappwopg.supabase.co/storage/v1/object/public/sites/prisaka/assets/logoipsum-277.svg",
+					"url": "https://jbbjtodsvhsgjappwopg.supabase.co/storage/v1/object/public/sites/prisaka/assets/logoipsum-277.svg",
+					"size": 3
+				},
+				title: "Our Mission",
+				description: "One Billion Tree's mission",
 				logo: {
 					"image": {
 						"alt": "",
@@ -4205,99 +4134,37 @@ function create_fragment$5(ctx) {
 					},
 					"title": "BillionTrees"
 				},
-				footer: {
-					"menus": [
-						{
-							"links": [
-								{ "link": { "url": "/", "label": "sit" } },
-								{ "link": { "url": "/", "label": "nulla" } }
-							],
-							"title": "About Us"
-						},
-						{
-							"links": [
-								{
-									"link": { "url": "/", "label": "labore" }
-								},
-								{ "link": { "url": "/", "label": "velit" } }
-							],
-							"title": "Get Involved"
-						}
-					],
-					"content": "<h3 id=\"billiontreesbr\">BillionTrees <br></h3>\n<p>321 Something St. Jackson, AL 20332</p>"
-				},
-				favicon: {
-					"alt": "",
-					"src": "https://jbbjtodsvhsgjappwopg.supabase.co/storage/v1/object/public/sites/prisaka/assets/logoipsum-277.svg",
-					"url": "https://jbbjtodsvhsgjappwopg.supabase.co/storage/v1/object/public/sites/prisaka/assets/logoipsum-277.svg",
-					"size": 3
-				},
 				site_nav: [
-					{ "link": { "url": "/", "label": "Home" } },
 					{
-						"link": { "url": "/about", "label": "About" }
+						"link": {
+							"url": "https://primosites.vercel.app/theme-nonprofit",
+							"label": "Home"
+						}
 					},
 					{
-						"link": { "url": "/blog", "label": "Blog" }
+						"link": {
+							"url": "https://primosites.vercel.app/about",
+							"label": "About"
+						}
+					},
+					{
+						"link": {
+							"url": "https://primosites.vercel.app/blog",
+							"label": "Blog"
+						}
 					}
-				],
-				title: "Our Mission",
-				description: "One Billion Tree's mission"
+				]
 			}
 		});
 
 	component_2 = new Component$3({
 			props: {
-				logo: {
-					"image": {
-						"alt": "",
-						"src": "",
-						"url": "",
-						"size": null
-					},
-					"title": "BillionTrees "
-				},
-				footer: {
-					"menus": [
-						{
-							"links": [
-								{ "link": { "url": "/", "label": "sit" } },
-								{ "link": { "url": "/", "label": "nulla" } }
-							],
-							"title": "About Us"
-						},
-						{
-							"links": [
-								{
-									"link": { "url": "/", "label": "labore" }
-								},
-								{ "link": { "url": "/", "label": "velit" } }
-							],
-							"title": "Get Involved"
-						}
-					],
-					"content": "<h3 id=\"billiontreesbr\">BillionTrees <br></h3>\n<p>321 Something St. Jackson, AL 20332</p>"
-				},
 				favicon: {
 					"alt": "",
 					"src": "https://jbbjtodsvhsgjappwopg.supabase.co/storage/v1/object/public/sites/prisaka/assets/logoipsum-277.svg",
 					"url": "https://jbbjtodsvhsgjappwopg.supabase.co/storage/v1/object/public/sites/prisaka/assets/logoipsum-277.svg",
 					"size": 3
 				},
-				site_nav: [
-					{
-						"link": { "url": "/about", "label": "About" }
-					},
-					{
-						"link": { "url": "/mission", "label": "Mission" }
-					},
-					{
-						"link": { "url": "/team", "label": "Team" }
-					},
-					{
-						"link": { "url": "/blog", "label": "Blog" }
-					}
-				],
 				title: "Our Mission",
 				description: "One Billion Tree's mission",
 				image: {
@@ -4315,56 +4182,12 @@ function create_fragment$5(ctx) {
 
 	component_3 = new Component$4({
 			props: {
-				logo: {
-					"image": {
-						"alt": "",
-						"src": "",
-						"url": "",
-						"size": null
-					},
-					"title": "BillionTrees "
-				},
-				footer: {
-					"menus": [
-						{
-							"links": [
-								{ "link": { "url": "/", "label": "sit" } },
-								{ "link": { "url": "/", "label": "nulla" } }
-							],
-							"title": "About Us"
-						},
-						{
-							"links": [
-								{
-									"link": { "url": "/", "label": "labore" }
-								},
-								{ "link": { "url": "/", "label": "velit" } }
-							],
-							"title": "Get Involved"
-						}
-					],
-					"content": "<h3 id=\"billiontreesbr\">BillionTrees <br></h3>\n<p>321 Something St. Jackson, AL 20332</p>"
-				},
 				favicon: {
 					"alt": "",
 					"src": "https://jbbjtodsvhsgjappwopg.supabase.co/storage/v1/object/public/sites/prisaka/assets/logoipsum-277.svg",
 					"url": "https://jbbjtodsvhsgjappwopg.supabase.co/storage/v1/object/public/sites/prisaka/assets/logoipsum-277.svg",
 					"size": 3
 				},
-				site_nav: [
-					{
-						"link": { "url": "/about", "label": "About" }
-					},
-					{
-						"link": { "url": "/mission", "label": "Mission" }
-					},
-					{
-						"link": { "url": "/team", "label": "Team" }
-					},
-					{
-						"link": { "url": "/blog", "label": "Blog" }
-					}
-				],
 				title: "Our Mission",
 				description: "One Billion Tree's mission",
 				content: {
@@ -4394,56 +4217,12 @@ function create_fragment$5(ctx) {
 
 	component_4 = new Component$5({
 			props: {
-				logo: {
-					"image": {
-						"alt": "",
-						"src": "",
-						"url": "",
-						"size": null
-					},
-					"title": "BillionTrees "
-				},
-				footer: {
-					"menus": [
-						{
-							"links": [
-								{ "link": { "url": "/", "label": "sit" } },
-								{ "link": { "url": "/", "label": "nulla" } }
-							],
-							"title": "About Us"
-						},
-						{
-							"links": [
-								{
-									"link": { "url": "/", "label": "labore" }
-								},
-								{ "link": { "url": "/", "label": "velit" } }
-							],
-							"title": "Get Involved"
-						}
-					],
-					"content": "<h3 id=\"billiontreesbr\">BillionTrees <br></h3>\n<p>321 Something St. Jackson, AL 20332</p>"
-				},
 				favicon: {
 					"alt": "",
 					"src": "https://jbbjtodsvhsgjappwopg.supabase.co/storage/v1/object/public/sites/prisaka/assets/logoipsum-277.svg",
 					"url": "https://jbbjtodsvhsgjappwopg.supabase.co/storage/v1/object/public/sites/prisaka/assets/logoipsum-277.svg",
 					"size": 3
 				},
-				site_nav: [
-					{
-						"link": { "url": "/about", "label": "About" }
-					},
-					{
-						"link": { "url": "/mission", "label": "Mission" }
-					},
-					{
-						"link": { "url": "/team", "label": "Team" }
-					},
-					{
-						"link": { "url": "/blog", "label": "Blog" }
-					}
-				],
 				title: "Our Mission",
 				description: "One Billion Tree's mission"
 			}
