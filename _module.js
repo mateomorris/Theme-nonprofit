@@ -5316,7 +5316,7 @@ function create_fragment$9(ctx) {
 				},
 				title: "BillionTrees Project",
 				description: "We're on a mission to save the trees",
-				heading: "Nothing makes the world uglier than a lack of trees, and nothing more beautiful than an abundance.",
+				heading: "Supporting innovative methods to save forests and jungles.",
 				link: { "url": "/", "label": "Our Mission" },
 				content: {
 					"html": "<p>The BillionTrees Project was initiated in 2020 to help further our mission to protect, preserve and restore the natural environment of our nation’s major rivers and their watersheds. </p><p>Our mission is to not only clean up the river ways but to also enhance the watershed by planting native trees and removing invasive plants.</p>",
