@@ -3939,7 +3939,7 @@ function create_each_block$1(ctx) {
 	let t1;
 	let t2;
 	let div0;
-	let raw_value = /*teaser*/ ctx[4].body + "";
+	let raw_value = /*teaser*/ ctx[4].body.html + "";
 	let t3;
 	let t4;
 	let if_block0 = /*teaser*/ ctx[4].image.url && create_if_block_1$2(ctx);
@@ -4017,7 +4017,7 @@ function create_each_block$1(ctx) {
 			}
 
 			if (dirty & /*teasers*/ 1 && t1_value !== (t1_value = /*teaser*/ ctx[4].title + "")) set_data(t1, t1_value);
-			if (dirty & /*teasers*/ 1 && raw_value !== (raw_value = /*teaser*/ ctx[4].body + "")) div0.innerHTML = raw_value;
+			if (dirty & /*teasers*/ 1 && raw_value !== (raw_value = /*teaser*/ ctx[4].body.html + "")) div0.innerHTML = raw_value;
 			if (/*teaser*/ ctx[4].link.url) {
 				if (if_block1) {
 					if_block1.p(ctx, dirty);
