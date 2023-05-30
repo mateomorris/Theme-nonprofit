@@ -227,65 +227,59 @@
             top: 1rem
         }
 
-        .posts.svelte-lu62b6.svelte-lu62b6 {
+        .teasers.svelte-zvxqyf.svelte-zvxqyf {
             display: grid;
             gap: 6rem
         }
 
-        @media(min-width: 800px) {
-            .posts.svelte-lu62b6.svelte-lu62b6 {
-                grid-template-columns: 1fr 1fr
-            }
-        }
-
-        @media(min-width: 1200px) {
-            .posts.svelte-lu62b6.svelte-lu62b6 {
-                grid-template-columns: 1fr 1fr 1fr
-            }
-        }
-
-        .post.svelte-lu62b6.svelte-lu62b6 {
+        .teaser.svelte-zvxqyf.svelte-zvxqyf {
             display: grid;
-            gap: 1.25rem;
-            place-content: start
+            gap: 3rem
         }
 
-        .post.svelte-lu62b6 img.svelte-lu62b6 {
+        .teaser.svelte-zvxqyf img.svelte-zvxqyf {
             width: 100%;
             border-radius: var(--border-radius)
         }
 
-        .post.svelte-lu62b6 .content-section.svelte-lu62b6 {
+        .teaser.svelte-zvxqyf .body.svelte-zvxqyf {
             display: grid;
-            place-items: start;
-            place-content: start;
-            padding: 0
+            place-items: flex-start;
+            gap: 1.5rem;
+            padding: 0;
+            line-height: 1.5
         }
 
-        .post.svelte-lu62b6 .content-section .date.svelte-lu62b6 {
-            font-size: .9rem;
-            margin-bottom: .25rem
-        }
-
-        .post.svelte-lu62b6 .content-section .title.svelte-lu62b6 {
+        .teaser.svelte-zvxqyf .body .title.svelte-zvxqyf {
+            font-size: 2.25rem;
             font-weight: 500;
-            font-size: clamp(1.5rem, 5vw, 1.75rem);
-            line-height: 1.1;
-            margin-bottom: .75rem
-        }
-
-        .post.svelte-lu62b6 .content-section .description.svelte-lu62b6 {
-            line-height: 1.4;
-            margin-bottom: 1rem;
-            font-size: 1rem
-        }
-
-        .post.svelte-lu62b6 .content-section a.link.svelte-lu62b6 {
-            font-size: 1rem
+            line-height: 1.25
         }
 
         @media(min-width: 800px) {
-            section.svelte-lu62b6.svelte-lu62b6 {
+            .teaser.svelte-zvxqyf.svelte-zvxqyf {
+                grid-template-columns: 1fr 1fr;
+                place-items: center
+                    /* switch direction for even items */
+            }
+
+            .teaser.svelte-zvxqyf:nth-child(even) .body.svelte-zvxqyf {
+                grid-row: 1;
+                grid-column: 2
+            }
+
+            .teaser.svelte-zvxqyf:nth-child(even) img.svelte-zvxqyf {
+                grid-row: 1;
+                grid-column: 1
+            }
+        }
+
+        @media(min-width: 1200px) {
+            section.svelte-zvxqyf.svelte-zvxqyf {
+                gap: 6rem
+            }
+
+            .teaser.svelte-zvxqyf.svelte-zvxqyf {
                 gap: 6rem
             }
         }
@@ -359,69 +353,20 @@
             </header>
         </div>
     </div>
-    <div class="section" id="section-89201cd4-1927-425f-ae30-5bb395eeeb1e">
+    <div class="section" id="section-e73d155a-93c9-49f2-9bd3-5ff832331aba">
         <div class="component">
-            <section class="section-container svelte-lu62b6">
-                <div class="posts svelte-lu62b6">
-                    <div class="post svelte-lu62b6"><img src="https://images.unsplash.com/photo-1669111958756-13b1d5be9110?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1370&amp;q=80" alt="" class="svelte-lu62b6">
-                        <div class="content-section svelte-lu62b6"><span class="date svelte-lu62b6">10/12/22</span>
-                            <h2 class="title svelte-lu62b6">Guide to green living in 2022</h2>
-                            <div class="description svelte-lu62b6"><!-- HTML_TAG_START -->
-                                <p>We surveyed 5,000 trees about what they think humans should stop doing. The responses may surprise you.</p><!-- HTML_TAG_END -->
+            <section class="section-container svelte-zvxqyf">
+                <div class="teasers svelte-zvxqyf">
+                    <div class="teaser svelte-zvxqyf">
+                        <div class="body svelte-zvxqyf">
+                            <h2 class="title svelte-zvxqyf">Discover the unseen</h2>
+                            <div class="description"><!-- HTML_TAG_START -->
+                                <p>Dive into a world full of hidden mysteries and breathtaking views. Explore the unexplored corners of the Earth from the comfort of your own home. </p><!-- HTML_TAG_END -->
                             </div>
-                            <a class="link svelte-lu62b6" href="/blog/blog-post">Read More
+                            <a class="link svelte-zvxqyf" href="/">Read more
                             </a>
                         </div>
-                    </div>
-                    <div class="post svelte-lu62b6"><img src="https://images.unsplash.com/photo-1637678646251-5366d5586014?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1370&amp;q=80" alt="" class="svelte-lu62b6">
-                        <div class="content-section svelte-lu62b6"><span class="date svelte-lu62b6">8/15/20</span>
-                            <h2 class="title svelte-lu62b6">Tree planting fiesta</h2>
-                            <div class="description svelte-lu62b6"><!-- HTML_TAG_START -->
-                                <p>Check out photos and highlights from our Tree Fiesta in Orlando. We include dates for the next tree planting fiestas.</p><!-- HTML_TAG_END -->
-                            </div>
-                            <a class="link svelte-lu62b6" href="/">Learn More
-                            </a>
-                        </div>
-                    </div>
-                    <div class="post svelte-lu62b6"><img src="https://images.unsplash.com/photo-1669394367883-001df3543989?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1371&amp;q=80" alt="" class="svelte-lu62b6">
-                        <div class="content-section svelte-lu62b6"><span class="date svelte-lu62b6">8/12/20</span>
-                            <h2 class="title svelte-lu62b6">DIY composting</h2>
-                            <div class="description svelte-lu62b6"><!-- HTML_TAG_START -->
-                                <p>You won't believe how easy it is to start a compost in your backyard. Reduce your landfill waste by 50% and use your leaf and lawn clippings to make your pile a decomposing machine.</p><!-- HTML_TAG_END -->
-                            </div>
-                            <a class="link svelte-lu62b6" href="/">Learn More
-                            </a>
-                        </div>
-                    </div>
-                    <div class="post svelte-lu62b6"><img src="https://images.unsplash.com/photo-1668742090395-dac02c56ea35?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1370&amp;q=80" alt="" class="svelte-lu62b6">
-                        <div class="content-section svelte-lu62b6"><span class="date svelte-lu62b6">8/22/20</span>
-                            <h2 class="title svelte-lu62b6">Why we need cattle</h2>
-                            <div class="description svelte-lu62b6"><!-- HTML_TAG_START -->
-                                <p>Against popular opinion, grass-eating mammals actually play a key role in sustaining the environment, especially the top soil. So don't stop eating meat, rather support regenerative agriculture.</p><!-- HTML_TAG_END -->
-                            </div>
-                            <a class="link svelte-lu62b6" href="/">Learn More
-                            </a>
-                        </div>
-                    </div>
-                    <div class="post svelte-lu62b6"><img src="https://images.unsplash.com/photo-1650909114368-f49e88e71dce?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1370&amp;q=80" alt="" class="svelte-lu62b6">
-                        <div class="content-section svelte-lu62b6"><span class="date svelte-lu62b6">9/12/21</span>
-                            <h2 class="title svelte-lu62b6">Tree whispering</h2>
-                            <div class="description svelte-lu62b6"><!-- HTML_TAG_START -->
-                                <p>This article encloses the secret art of tree whispering. You'll find out everything you need to know to have heartfelt, blissful conversations with your fellow trees.</p><!-- HTML_TAG_END -->
-                            </div>
-                            <a class="link svelte-lu62b6" href="/">Lean More
-                            </a>
-                        </div>
-                    </div>
-                    <div class="post svelte-lu62b6"><img src="https://images.unsplash.com/photo-1669090787997-1d7878a44be7?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1832&amp;q=80" alt="" class="svelte-lu62b6">
-                        <div class="content-section svelte-lu62b6"><span class="date svelte-lu62b6">8/12/20</span>
-                            <h2 class="title svelte-lu62b6">Are we really headed towards mass extinction?</h2>
-                            <div class="description svelte-lu62b6"><!-- HTML_TAG_START -->
-                                <p>Yes, it's possible at any moment. But we don't have to be shaking in our boots. This guide will show you some meager but significant ways to enjoy and cherish the beautiful earth, while she's still around.</p><!-- HTML_TAG_END -->
-                            </div>
-                            <a class="link svelte-lu62b6" href="/">Learn More
-                            </a>
-                        </div>
+                        <img src="https://picsum.photos/600/400?blur=10" alt="" class="svelte-zvxqyf">
                     </div>
                 </div>
             </section>

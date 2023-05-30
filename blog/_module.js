@@ -3646,48 +3646,10 @@ function get_each_context$1(ctx, list, i) {
 	return child_ctx;
 }
 
-// (89:8) {#if post.image.url}
+// (84:10) {#if teaser.link.url}
 function create_if_block_1$2(ctx) {
-	let img;
-	let img_src_value;
-	let img_alt_value;
-
-	return {
-		c() {
-			img = element("img");
-			this.h();
-		},
-		l(nodes) {
-			img = claim_element(nodes, "IMG", { src: true, alt: true, class: true });
-			this.h();
-		},
-		h() {
-			if (!src_url_equal(img.src, img_src_value = /*post*/ ctx[4].image.url)) attr(img, "src", img_src_value);
-			attr(img, "alt", img_alt_value = /*post*/ ctx[4].image.alt);
-			attr(img, "class", "svelte-lu62b6");
-		},
-		m(target, anchor) {
-			insert_hydration(target, img, anchor);
-		},
-		p(ctx, dirty) {
-			if (dirty & /*posts*/ 1 && !src_url_equal(img.src, img_src_value = /*post*/ ctx[4].image.url)) {
-				attr(img, "src", img_src_value);
-			}
-
-			if (dirty & /*posts*/ 1 && img_alt_value !== (img_alt_value = /*post*/ ctx[4].image.alt)) {
-				attr(img, "alt", img_alt_value);
-			}
-		},
-		d(detaching) {
-			if (detaching) detach(img);
-		}
-	};
-}
-
-// (96:10) {#if post.link.url}
-function create_if_block$2(ctx) {
 	let a;
-	let t_value = /*post*/ ctx[4].link.label + "";
+	let t_value = /*teaser*/ ctx[4].link.label + "";
 	let t;
 	let a_href_value;
 
@@ -3705,17 +3667,17 @@ function create_if_block$2(ctx) {
 			this.h();
 		},
 		h() {
-			attr(a, "class", "link svelte-lu62b6");
-			attr(a, "href", a_href_value = /*post*/ ctx[4].link.url);
+			attr(a, "class", "link svelte-zvxqyf");
+			attr(a, "href", a_href_value = /*teaser*/ ctx[4].link.url);
 		},
 		m(target, anchor) {
 			insert_hydration(target, a, anchor);
 			append_hydration(a, t);
 		},
 		p(ctx, dirty) {
-			if (dirty & /*posts*/ 1 && t_value !== (t_value = /*post*/ ctx[4].link.label + "")) set_data(t, t_value);
+			if (dirty & /*teasers*/ 1 && t_value !== (t_value = /*teaser*/ ctx[4].link.label + "")) set_data(t, t_value);
 
-			if (dirty & /*posts*/ 1 && a_href_value !== (a_href_value = /*post*/ ctx[4].link.url)) {
+			if (dirty & /*teasers*/ 1 && a_href_value !== (a_href_value = /*teaser*/ ctx[4].link.url)) {
 				attr(a, "href", a_href_value);
 			}
 		},
@@ -3725,119 +3687,140 @@ function create_if_block$2(ctx) {
 	};
 }
 
-// (87:4) {#each posts as post}
+// (90:8) {#if teaser.image.url}
+function create_if_block$2(ctx) {
+	let img;
+	let img_src_value;
+	let img_alt_value;
+
+	return {
+		c() {
+			img = element("img");
+			this.h();
+		},
+		l(nodes) {
+			img = claim_element(nodes, "IMG", { src: true, alt: true, class: true });
+			this.h();
+		},
+		h() {
+			if (!src_url_equal(img.src, img_src_value = /*teaser*/ ctx[4].image.url)) attr(img, "src", img_src_value);
+			attr(img, "alt", img_alt_value = /*teaser*/ ctx[4].image.alt);
+			attr(img, "class", "svelte-zvxqyf");
+		},
+		m(target, anchor) {
+			insert_hydration(target, img, anchor);
+		},
+		p(ctx, dirty) {
+			if (dirty & /*teasers*/ 1 && !src_url_equal(img.src, img_src_value = /*teaser*/ ctx[4].image.url)) {
+				attr(img, "src", img_src_value);
+			}
+
+			if (dirty & /*teasers*/ 1 && img_alt_value !== (img_alt_value = /*teaser*/ ctx[4].image.alt)) {
+				attr(img, "alt", img_alt_value);
+			}
+		},
+		d(detaching) {
+			if (detaching) detach(img);
+		}
+	};
+}
+
+// (79:4) {#each teasers as teaser}
 function create_each_block$1(ctx) {
 	let div2;
-	let t0;
 	let div1;
-	let span;
-	let t1_value = /*post*/ ctx[4].date + "";
-	let t1;
-	let t2;
 	let h2;
-	let t3_value = /*post*/ ctx[4].title + "";
+	let t0_value = /*teaser*/ ctx[4].title + "";
+	let t0;
+	let t1;
+	let div0;
+	let raw_value = /*teaser*/ ctx[4].description.html + "";
+	let t2;
 	let t3;
 	let t4;
-	let div0;
-	let raw_value = /*post*/ ctx[4].description.html + "";
-	let t5;
-	let t6;
-	let if_block0 = /*post*/ ctx[4].image.url && create_if_block_1$2(ctx);
-	let if_block1 = /*post*/ ctx[4].link.url && create_if_block$2(ctx);
+	let if_block0 = /*teaser*/ ctx[4].link.url && create_if_block_1$2(ctx);
+	let if_block1 = /*teaser*/ ctx[4].image.url && create_if_block$2(ctx);
 
 	return {
 		c() {
 			div2 = element("div");
-			if (if_block0) if_block0.c();
-			t0 = space();
 			div1 = element("div");
-			span = element("span");
-			t1 = text(t1_value);
-			t2 = space();
 			h2 = element("h2");
-			t3 = text(t3_value);
-			t4 = space();
+			t0 = text(t0_value);
+			t1 = space();
 			div0 = element("div");
-			t5 = space();
+			t2 = space();
+			if (if_block0) if_block0.c();
+			t3 = space();
 			if (if_block1) if_block1.c();
-			t6 = space();
+			t4 = space();
 			this.h();
 		},
 		l(nodes) {
 			div2 = claim_element(nodes, "DIV", { class: true });
 			var div2_nodes = children(div2);
-			if (if_block0) if_block0.l(div2_nodes);
-			t0 = claim_space(div2_nodes);
 			div1 = claim_element(div2_nodes, "DIV", { class: true });
 			var div1_nodes = children(div1);
-			span = claim_element(div1_nodes, "SPAN", { class: true });
-			var span_nodes = children(span);
-			t1 = claim_text(span_nodes, t1_value);
-			span_nodes.forEach(detach);
-			t2 = claim_space(div1_nodes);
 			h2 = claim_element(div1_nodes, "H2", { class: true });
 			var h2_nodes = children(h2);
-			t3 = claim_text(h2_nodes, t3_value);
+			t0 = claim_text(h2_nodes, t0_value);
 			h2_nodes.forEach(detach);
-			t4 = claim_space(div1_nodes);
+			t1 = claim_space(div1_nodes);
 			div0 = claim_element(div1_nodes, "DIV", { class: true });
 			var div0_nodes = children(div0);
 			div0_nodes.forEach(detach);
-			t5 = claim_space(div1_nodes);
-			if (if_block1) if_block1.l(div1_nodes);
+			t2 = claim_space(div1_nodes);
+			if (if_block0) if_block0.l(div1_nodes);
 			div1_nodes.forEach(detach);
-			t6 = claim_space(div2_nodes);
+			t3 = claim_space(div2_nodes);
+			if (if_block1) if_block1.l(div2_nodes);
+			t4 = claim_space(div2_nodes);
 			div2_nodes.forEach(detach);
 			this.h();
 		},
 		h() {
-			attr(span, "class", "date svelte-lu62b6");
-			attr(h2, "class", "title svelte-lu62b6");
-			attr(div0, "class", "description svelte-lu62b6");
-			attr(div1, "class", "content-section svelte-lu62b6");
-			attr(div2, "class", "post svelte-lu62b6");
+			attr(h2, "class", "title svelte-zvxqyf");
+			attr(div0, "class", "description");
+			attr(div1, "class", "body svelte-zvxqyf");
+			attr(div2, "class", "teaser svelte-zvxqyf");
 		},
 		m(target, anchor) {
 			insert_hydration(target, div2, anchor);
-			if (if_block0) if_block0.m(div2, null);
-			append_hydration(div2, t0);
 			append_hydration(div2, div1);
-			append_hydration(div1, span);
-			append_hydration(span, t1);
-			append_hydration(div1, t2);
 			append_hydration(div1, h2);
-			append_hydration(h2, t3);
-			append_hydration(div1, t4);
+			append_hydration(h2, t0);
+			append_hydration(div1, t1);
 			append_hydration(div1, div0);
 			div0.innerHTML = raw_value;
-			append_hydration(div1, t5);
-			if (if_block1) if_block1.m(div1, null);
-			append_hydration(div2, t6);
+			append_hydration(div1, t2);
+			if (if_block0) if_block0.m(div1, null);
+			append_hydration(div2, t3);
+			if (if_block1) if_block1.m(div2, null);
+			append_hydration(div2, t4);
 		},
 		p(ctx, dirty) {
-			if (/*post*/ ctx[4].image.url) {
+			if (dirty & /*teasers*/ 1 && t0_value !== (t0_value = /*teaser*/ ctx[4].title + "")) set_data(t0, t0_value);
+			if (dirty & /*teasers*/ 1 && raw_value !== (raw_value = /*teaser*/ ctx[4].description.html + "")) div0.innerHTML = raw_value;
+			if (/*teaser*/ ctx[4].link.url) {
 				if (if_block0) {
 					if_block0.p(ctx, dirty);
 				} else {
 					if_block0 = create_if_block_1$2(ctx);
 					if_block0.c();
-					if_block0.m(div2, t0);
+					if_block0.m(div1, null);
 				}
 			} else if (if_block0) {
 				if_block0.d(1);
 				if_block0 = null;
 			}
 
-			if (dirty & /*posts*/ 1 && t1_value !== (t1_value = /*post*/ ctx[4].date + "")) set_data(t1, t1_value);
-			if (dirty & /*posts*/ 1 && t3_value !== (t3_value = /*post*/ ctx[4].title + "")) set_data(t3, t3_value);
-			if (dirty & /*posts*/ 1 && raw_value !== (raw_value = /*post*/ ctx[4].description.html + "")) div0.innerHTML = raw_value;
-			if (/*post*/ ctx[4].link.url) {
+			if (/*teaser*/ ctx[4].image.url) {
 				if (if_block1) {
 					if_block1.p(ctx, dirty);
 				} else {
 					if_block1 = create_if_block$2(ctx);
 					if_block1.c();
-					if_block1.m(div1, null);
+					if_block1.m(div2, t4);
 				}
 			} else if (if_block1) {
 				if_block1.d(1);
@@ -3857,7 +3840,7 @@ function create_fragment$3(ctx) {
 	let div1;
 	let section;
 	let div0;
-	let each_value = /*posts*/ ctx[0];
+	let each_value = /*teasers*/ ctx[0];
 	let each_blocks = [];
 
 	for (let i = 0; i < each_value.length; i += 1) {
@@ -3898,11 +3881,11 @@ function create_fragment$3(ctx) {
 			this.h();
 		},
 		h() {
-			attr(div0, "class", "posts svelte-lu62b6");
-			attr(section, "class", "section-container svelte-lu62b6");
+			attr(div0, "class", "teasers svelte-zvxqyf");
+			attr(section, "class", "section-container svelte-zvxqyf");
 			attr(div1, "class", "component");
 			attr(div2, "class", "section");
-			attr(div2, "id", "section-89201cd4-1927-425f-ae30-5bb395eeeb1e");
+			attr(div2, "id", "section-e73d155a-93c9-49f2-9bd3-5ff832331aba");
 		},
 		m(target, anchor) {
 			insert_hydration(target, div2, anchor);
@@ -3917,8 +3900,8 @@ function create_fragment$3(ctx) {
 			}
 		},
 		p(ctx, [dirty]) {
-			if (dirty & /*posts*/ 1) {
-				each_value = /*posts*/ ctx[0];
+			if (dirty & /*teasers*/ 1) {
+				each_value = /*teasers*/ ctx[0];
 				let i;
 
 				for (i = 0; i < each_value.length; i += 1) {
@@ -3953,16 +3936,16 @@ function instance$3($$self, $$props, $$invalidate) {
 	let { favicon } = $$props;
 	let { title } = $$props;
 	let { description } = $$props;
-	let { posts } = $$props;
+	let { teasers } = $$props;
 
 	$$self.$$set = $$props => {
 		if ('favicon' in $$props) $$invalidate(1, favicon = $$props.favicon);
 		if ('title' in $$props) $$invalidate(2, title = $$props.title);
 		if ('description' in $$props) $$invalidate(3, description = $$props.description);
-		if ('posts' in $$props) $$invalidate(0, posts = $$props.posts);
+		if ('teasers' in $$props) $$invalidate(0, teasers = $$props.teasers);
 	};
 
-	return [posts, favicon, title, description];
+	return [teasers, favicon, title, description];
 }
 
 class Component$3 extends SvelteComponent {
@@ -3973,7 +3956,7 @@ class Component$3 extends SvelteComponent {
 			favicon: 1,
 			title: 2,
 			description: 3,
-			posts: 0
+			teasers: 0
 		});
 	}
 }
@@ -4399,98 +4382,19 @@ function create_fragment$5(ctx) {
 				},
 				title: "Blog",
 				description: "Our blog to learn everything you need to save the trees",
-				posts: [
+				teasers: [
 					{
-						"date": "10/12/22",
-						"link": {
-							"url": "/blog/blog-post",
-							"label": "Read More"
-						},
+						"link": { "url": "/", "label": "Read more" },
 						"image": {
 							"alt": "",
-							"src": "https://images.unsplash.com/photo-1669111958756-13b1d5be9110?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1370&q=80",
-							"url": "https://images.unsplash.com/photo-1669111958756-13b1d5be9110?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1370&q=80",
+							"src": "https://picsum.photos/600/400?blur=10",
+							"url": "https://picsum.photos/600/400?blur=10",
 							"size": null
 						},
-						"title": "Guide to green living in 2022",
+						"title": "Discover the unseen",
 						"description": {
-							"html": "<p>We surveyed 5,000 trees about what they think humans should stop doing. The responses may surprise you.</p>",
-							"markdown": "We surveyed 5,000 trees about what they think humans should stop doing. The responses may surprise you.\n\n"
-						}
-					},
-					{
-						"date": "8/15/20",
-						"link": { "url": "/", "label": "Learn More" },
-						"image": {
-							"alt": "",
-							"src": "https://images.unsplash.com/photo-1637678646251-5366d5586014?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1370&q=80",
-							"url": "https://images.unsplash.com/photo-1637678646251-5366d5586014?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1370&q=80",
-							"size": null
-						},
-						"title": "Tree planting fiesta",
-						"description": {
-							"html": "<p>Check out photos and highlights from our Tree Fiesta in Orlando. We include dates for the next tree planting fiestas.</p>",
-							"markdown": "Check out photos and highlights from our Tree Fiesta in Orlando. We include dates for the next tree planting fiestas.\n\n"
-						}
-					},
-					{
-						"date": "8/12/20",
-						"link": { "url": "/", "label": "Learn More" },
-						"image": {
-							"alt": "",
-							"src": "https://images.unsplash.com/photo-1669394367883-001df3543989?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1371&q=80",
-							"url": "https://images.unsplash.com/photo-1669394367883-001df3543989?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1371&q=80",
-							"size": null
-						},
-						"title": "DIY composting",
-						"description": {
-							"html": "<p>You won't believe how easy it is to start a compost in your backyard. Reduce your landfill waste by 50% and use your leaf and lawn clippings to make your pile a decomposing machine.</p>",
-							"markdown": "You won't believe how easy it is to start a compost in your backyard. Reduce your landfill waste by 50% and use your leaf and lawn clippings to make your pile a decomposing machine.\n\n"
-						}
-					},
-					{
-						"date": "8/22/20",
-						"link": { "url": "/", "label": "Learn More" },
-						"image": {
-							"alt": "",
-							"src": "https://images.unsplash.com/photo-1668742090395-dac02c56ea35?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1370&q=80",
-							"url": "https://images.unsplash.com/photo-1668742090395-dac02c56ea35?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1370&q=80",
-							"size": null
-						},
-						"title": "Why we need cattle",
-						"description": {
-							"html": "<p>Against popular opinion, grass-eating mammals actually play a key role in sustaining the environment, especially the top soil. So don't stop eating meat, rather support regenerative agriculture.</p>",
-							"markdown": "Against popular opinion, grass-eating mammals actually play a key role in sustaining the environment, especially the top soil. So don't stop eating meat, rather support regenerative agriculture.\n"
-						}
-					},
-					{
-						"date": "9/12/21",
-						"link": { "url": "/", "label": "Lean More" },
-						"image": {
-							"alt": "",
-							"src": "https://images.unsplash.com/photo-1650909114368-f49e88e71dce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1370&q=80",
-							"url": "https://images.unsplash.com/photo-1650909114368-f49e88e71dce?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1370&q=80",
-							"size": null
-						},
-						"title": "Tree whispering",
-						"description": {
-							"html": "<p>This article encloses the secret art of tree whispering. You'll find out everything you need to know to have heartfelt, blissful conversations with your fellow trees.</p>",
-							"markdown": "This article encloses the secret art of tree whispering. You'll find out everything you need to know to have heartfelt, blissful conversations with your fellow trees.\n\n"
-						}
-					},
-					{
-						"date": "8/12/20",
-						"link": { "url": "/", "label": "Learn More" },
-						"image": {
-							"alt": "",
-							"src": "https://images.unsplash.com/photo-1669090787997-1d7878a44be7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1832&q=80",
-							"url": "https://images.unsplash.com/photo-1669090787997-1d7878a44be7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1832&q=80",
-							"size": null
-						},
-						"title": "Are we really headed towards mass extinction?",
-						"description": {
-							"html": "<p>Yes, it's possible at any moment. But we don't have to be shaking in our boots. This guide will show you some meager but significant ways to enjoy and cherish the beautiful earth, while she's still around.</p>",
-							"markdown": "Yes, it's possible at any moment. But we don't have to be shaking in our boots. This guide will show you some meager but significant ways to enjoy and cherish the beautiful earth, while she's still around.\n\n"
+							"html": "<p>Dive into a world full of hidden mysteries and breathtaking views. Explore the unexplored corners of the Earth from the comfort of your own home. </p>",
+							"markdown": "Dive into a world full of hidden mysteries and breathtaking views. Explore the unexplored corners of the Earth from the comfort of your own home. "
 						}
 					}
 				]
