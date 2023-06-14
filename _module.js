@@ -5337,7 +5337,10 @@ function create_fragment$9(ctx) {
 				description: "We're on a mission to save the trees",
 				teasers: [
 					{
-						"body": "<p>Aute Lorem duis mollit laborum eu laborum magna deserunt. Ex reprehenderit Lorem do veniam et mollit officia duis excepteur qui consequat est esse et sit.</p>",
+						"body": {
+							"html": "<p>Aute Lorem duis mollit laborum eu laborum magna deserunt. Ex reprehenderit Lorem do veniam et mollit officia duis excepteur qui consequat est esse et sit.</p>",
+							"markdown": "Aute Lorem duis mollit laborum eu laborum magna deserunt. Ex reprehenderit Lorem do veniam et mollit officia duis excepteur qui consequat est esse et sit.\n"
+						},
 						"link": { "url": "/", "label": "Learn More" },
 						"image": {
 							"alt": "",
@@ -5348,7 +5351,10 @@ function create_fragment$9(ctx) {
 						"title": "Get Involved"
 					},
 					{
-						"body": "<p>Veniam labore proident do non quis do. Aliquip et in commodo sit ex id aliqua proident commodo laboris laboris et laboris irure cupidatat.</p>",
+						"body": {
+							"html": "<p>Veniam labore proident do non quis do. Aliquip et in commodo sit ex id aliqua proident commodo laboris laboris et laboris irure cupidatat.</p>",
+							"markdown": "Veniam labore proident do non quis do. Aliquip et in commodo sit ex id aliqua proident commodo laboris laboris et laboris irure cupidatat.\n\n"
+						},
 						"link": { "url": "/", "label": "Learn More" },
 						"image": {
 							"alt": "",
